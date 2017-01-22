@@ -123,10 +123,10 @@ class CalculationsController < ApplicationController
     count = -1
 
 
-    @sorted_numbers.each do |num|
-      if num == @sorted_numbers[mode_index]
-        count++
-      else
+    # @sorted_numbers.each do |num|
+    #   if num == @sorted_numbers[mode_index]
+    #     count++
+    #   else
 
 
 
