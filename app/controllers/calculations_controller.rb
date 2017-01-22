@@ -136,14 +136,14 @@ class CalculationsController < ApplicationController
 
 
     @sorted_numbers.each do |num|
-      if num == test_mode
+      if num == test_mode #in a streak, add 1
         test_count+=1
-      else
-        if test_count > count
+      else #new number
+        if test_count > count #check if we have a new mode
           mode = test_mode
           count = test_count
         end
-        test_count = 1
+        test_count = 1 #reset for the next number
         test_mode = num
       end
     end
