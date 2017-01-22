@@ -11,17 +11,24 @@ class CalculationsController < ApplicationController
     # ================================================================================
 
 
+
     @character_count_with_spaces = @text.length
 
-    word_array = @text.split
 
-    @character_count_without_spaces = @text.gsub("\s", "").length
+
+    @character_count_without_spaces = @text.gsub(/[\s\n]/, "").length
+
+    no_punctuation = @text.gsub(/[.?,!]/, "")
+
+    word_array = no_punctuation.split
 
     @word_count = word_array.length
+    special_word_downcase = @special_word.downcase
 
     count = 0
     word_array.each do |word|
-      if word == @special_word
+      word.downcase!
+      if word == special_word_downcase
         count+=1
       end
     end
@@ -47,7 +54,9 @@ class CalculationsController < ApplicationController
     # The principal value the user input is in the decimal @principal.
     # ================================================================================
 
-    @monthly_payment = (@principal * (@apr / 12)) / (1 - (1 + 12)** 12 * @years)
+    rate = @apr / 1200
+    months = @years *  12
+    @monthly_payment = @principal * (rate + (rate / ((1+rate) ** months - 1) ) )
 
     # ================================================================================
     # Your code goes above.
@@ -69,12 +78,12 @@ class CalculationsController < ApplicationController
     #   number of seconds as a result.
     # ================================================================================
 
-    @seconds = "Replace this string with your answer."
-    @minutes = "Replace this string with your answer."
-    @hours = "Replace this string with your answer."
-    @days = "Replace this string with your answer."
-    @weeks = "Replace this string with your answer."
-    @years = "Replace this string with your answer."
+    @seconds = @ending - @starting
+    @minutes = @seconds / 60
+    @hours = @minutes / 60
+    @days = @hours / 24
+    @weeks = @days / 7
+    @years = @weeks / 52
 
     # ================================================================================
     # Your code goes above.
@@ -119,18 +128,29 @@ class CalculationsController < ApplicationController
 
     @standard_deviation = Math.sqrt(@variance)
 
-    mode_index = 0
     count = -1
+    mode = @sorted_numbers[0]
+
+    test_count = -1
+    test_mode = @sorted_numbers[0]
 
 
-    # @sorted_numbers.each do |num|
-    #   if num == @sorted_numbers[mode_index]
-    #     count++
-    #   else
+    @sorted_numbers.each do |num|
+      if num == test_mode
+        test_count+=1
+      else
+        if test_count > count
+          mode = test_mode
+          count = test_count
+        end
+        test_count = 1
+        test_mode = num
+      end
+    end
 
 
 
-    @mode = "Replace this string with your answer."
+    @mode = mode
 
     # ================================================================================
     # Your code goes above.
